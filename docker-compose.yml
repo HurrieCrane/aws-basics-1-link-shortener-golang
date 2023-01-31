@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  linker-generator:
+    build:
+      context: .
+      args:
+        PROJECT_NAME: link-generator
+      dockerfile: Dockerfile-generator
+    ports:
+      - "9000:8080"
+    environment:
+      - PROJECT_NAME
+      - CGO_ENABLED=0
+      - ENVIRONMENT
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_ACCESS_KEY_ID
+      - AWS_SESSION_TOKEN
+  linker-resolver:
+    build:
+      context: .
+      args:
+        PROJECT_NAME: link-resolver
+      dockerfile: Dockerfile-resolver
+    ports:
+      - "9001:8080"
+    environment:
+      - PROJECT_NAME
+      - CGO_ENABLED=0
+      - ENVIRONMENT
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_ACCESS_KEY_ID
+      - AWS_SESSION_TOKEN
+  dynamodb:
+    image: amazon/dynamodb-local
+    container_name: dynamodb
+    hostname: dynamo
+    restart: always
+    volumes:
+      - ./test/dynamo:/home/dynamodblocal/data
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/"
