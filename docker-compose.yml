@@ -1,13 +1,11 @@
 version: '3.7'
 services:
   linker-generator:
-    build:
-      context: .
-      args:
-        PROJECT_NAME: link-generator
-      dockerfile: Dockerfile-generator
+    build: .
     ports:
       - "9000:8080"
+    volumes:
+      - ./lambdas/link-generator:/var/task
     environment:
       - PROJECT_NAME
       - CGO_ENABLED=0
@@ -16,13 +14,11 @@ services:
       - AWS_ACCESS_KEY_ID
       - AWS_SESSION_TOKEN
   linker-resolver:
-    build:
-      context: .
-      args:
-        PROJECT_NAME: link-resolver
-      dockerfile: Dockerfile-resolver
+    build: .
     ports:
       - "9001:8080"
+    volumes:
+      - ./lambdas/link-resolver:/var/task
     environment:
       - PROJECT_NAME
       - CGO_ENABLED=0

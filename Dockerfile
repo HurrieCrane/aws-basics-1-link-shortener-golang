@@ -7,10 +7,5 @@ ENV AWS_XRAY_SDK_DISABLED=TRUE
 # build correct path to main.zip
 ARG PROJECT_NAME
 
-# copy over main.zip
-ADD lambdas/link-resolver/main.zip ${LAMBDA_TASK_ROOT}
-
-RUN unzip -d ${LAMBDA_TASK_ROOT} ${LAMBDA_TASK_ROOT}/main.zip
-
 # run main
 CMD [ "main" ]
