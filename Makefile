@@ -5,6 +5,9 @@ IMAGE_TAG=${IMAGE_NAME}:local
 
 ADDITIONAL_ARGS=
 
+create_local_table:
+	aws dynamodb create-table --table-name shortened-links --attribute-definitions AttributeName=link-hash,AttributeType=S --key-schema AttributeName=link-hash,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --endpoint http://localhost:8000
+
 clean:
 	rm -f $(wildcard lambdas/*/main)
 	rm -f $(wildcard lambdas/*/main.zip)
